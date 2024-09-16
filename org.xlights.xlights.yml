@@ -1,0 +1,43 @@
+app-id: org.xlights.xlights
+runtime: org.gnome.Platform
+runtime-version: '3.38'
+sdk: org.gnome.Sdk
+command: xlights
+
+modules:
+
+  - name: wxwidgets
+    rm-configure: true
+    config-opts:
+      - --with-libpng
+      - --with-zlib
+      - --with-cxx=14
+      - --disable-sdltest
+      - --disable-webview
+      - --disable-webviewwebkit
+      - --disable-ribbon
+      - --disable-propgrid
+      - --disable-richtext
+      - --with-expat=builtin
+      - --with-libiconv=/usr
+    cleanup:
+#      - /bin
+#      - /include
+#      - /lib/cmake
+#      - /lib/wx
+#      - /share
+
+    sources:
+       - type: git   # from: https://github.com/flathub/org.audacityteam.Audacity/blob/master/org.audacityteam.Audacity.yaml
+         url: https://github.com/xLightsSequencer/wxWidgets.git
+         tag: xlights_2024.06
+
+  - name: xlights
+    buildsystem: autotools
+    no-autogen: true
+    build-options:
+      build-args:
+        - --share=network
+    sources:
+      - type: dir
+        path: .
