@@ -54,6 +54,14 @@ modules:
          url: https://github.com/xLightsSequencer/wxWidgets.git
          tag: xlights_2024.06
 
+  - name: nanosvg
+    buildsystem: cmake
+    builddir: true
+    sources:
+       - type: git
+         url: https://github.com/wxWidgets/nanosvg.git
+         branch: wx
+
   - name: xlights
     buildsystem: autotools
     no-autogen: true
