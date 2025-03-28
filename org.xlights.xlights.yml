@@ -1,6 +1,6 @@
 app-id: org.xlights.xlights
 runtime: org.gnome.Platform
-runtime-version: '46'
+runtime-version: '48'
 sdk: org.gnome.Sdk
 command: xlights
 
@@ -38,21 +38,19 @@ modules:
       - --enable-monolithic 
       - --disable-sdltest 
       - --with-gtk=3 
-      - --disable-glcanvasegl 
+      - --enable-glcanvasegl 
       - --disable-pcx 
       - --disable-iff 
       - --without-libtiff
     cleanup:
-#      - /bin
-#      - /include
-#      - /lib/cmake
-#      - /lib/wx
-#      - /share
+      - /bin
+      - /include
+      - /lib/wx
 
     sources:
        - type: git   # from: https://github.com/flathub/org.audacityteam.Audacity/blob/master/org.audacityteam.Audacity.yaml
          url: https://github.com/xLightsSequencer/wxWidgets.git
-         tag: xlights_2024.06
+         tag: xlights_2025.04
 
   - name: nanosvg
     buildsystem: cmake
