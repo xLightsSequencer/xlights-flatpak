@@ -1,7 +1,7 @@
 app-id: org.xlights.xlights
 runtime: org.freedesktop.Platform
 runtime-version: "24.08"
-sdk: org.freedesktop.Platform.Sdk
+sdk: org.freedesktop.Sdk
 command: xlights
 
 inherit-extensions:
