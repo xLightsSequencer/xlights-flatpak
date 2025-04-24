@@ -5,7 +5,7 @@ sdk: org.freedesktop.Platform.Sdk
 command: xlights
 
 inherit-extensions:
-  - org.freedesktop.Platform.GL32
+  - org.freedesktop.Platform.GL
   - org.freedesktop.Platform.ffmpeg-full
 
 modules:
