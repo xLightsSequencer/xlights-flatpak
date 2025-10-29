@@ -50,7 +50,7 @@ modules:
     sources:
        - type: git   # from: https://github.com/flathub/org.audacityteam.Audacity/blob/master/org.audacityteam.Audacity.yaml
          url: https://github.com/xLightsSequencer/wxWidgets.git
-         tag: xlights_2025.04
+         tag: xlights_2025.09
 
   - name: nanosvg
     buildsystem: cmake
