@@ -52,7 +52,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/memononen/nanosvg.git
-        commit: 9da543e8329fdd81b64eb18f8ce8bf2f5ac3c7c8
+        commit: 5cefd9847949af6df13f65027fd43af5a7513633
 
   - name: ffmpeg
     config-opts:
