@@ -1,78 +1,142 @@
-app-id: org.xlights.xlights
+app-id: org.xlights.xLights
 runtime: org.freedesktop.Platform
-runtime-version: "24.08"
+runtime-version: '24.08'
 sdk: org.freedesktop.Sdk
-command: xlights
+command: xLights
 
-inherit-extensions:
-  - org.freedesktop.Platform.GL
-  - org.freedesktop.Platform.ffmpeg-full
+finish-args:
+  - --share=network
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --device=all          # USB/serial for DMX/E1.31 dongles
+  - --filesystem=home     # show directory, media files
+  - --filesystem=/media   # external drives
+  - --filesystem=/run/udev:ro  # udev for device enumeration
 
 modules:
 
-  - shared-modules/lua5.3/lua-5.3.5.json
-  - name: lua5.3
-
-  - name: log4cpp
-    buildsystem: autotools
-    no-autogen: false
-    rm-configure: true
-    sources:
-        - type: archive
-          url: https://nchc.dl.sourceforge.net/project/log4cpp/log4cpp-1.1.x%20%28new%29/log4cpp-1.1/log4cpp-1.1.4.tar.gz
-          sha256: 696113659e426540625274a8b251052cc04306d8ee5c42a0c7639f39ca90c9d6
-          dest-filename: log4cpp.tar.gz
-          strip-components: 2
-
-  - name: wxwidgets
-    rm-configure: true
+  - name: zstd
+    buildsystem: cmake-ninja
+    subdir: build/cmake
     config-opts:
-      - --enable-cxx11
-      - --with-cxx=17 
-      - --enable-std_containers 
-      - --enable-std_string_conv_in_wxstring 
-      - --enable-backtrace 
-      - --enable-exceptions 
-      - --enable-mediactrl 
-      - --enable-graphics_ctx 
-      - --enable-monolithic 
-      - --disable-sdltest 
-      - --with-gtk=3 
-      - --enable-glcanvasegl 
-      - --disable-pcx 
-      - --disable-iff 
-      - --without-libtiff
-    cleanup:
-      - /bin
-      - /include
-      - /lib/wx
-
+      - -DZSTD_BUILD_PROGRAMS=OFF
+      - -DZSTD_BUILD_TESTS=OFF
     sources:
-       - type: git   # from: https://github.com/flathub/org.audacityteam.Audacity/blob/master/org.audacityteam.Audacity.yaml
-         url: https://github.com/xLightsSequencer/wxWidgets.git
-         tag: xlights_2025.09
+      - type: archive
+        url: https://github.com/facebook/zstd/releases/download/v1.5.6/zstd-1.5.6.tar.gz
+        sha256: 8c29e06cf42aacc1eafc4077ae2ec6c6fcb96a626157e0593d5e82a34fd403c1
+
+  - name: lua
+    buildsystem: simple
+    build-commands:
+      - make linux MYCFLAGS="-fPIC"
+      - make install INSTALL_TOP=/app
+    sources:
+      - type: archive
+        url: https://www.lua.org/ftp/lua-5.4.7.tar.gz
+        sha256: 9fbf5e28ef86c69858f6d3d34eccc32e911c1a28b4120ff3e84aaa70cfbf1e30
+
+  - name: libxlsxwriter
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DUSE_SYSTEM_MINIZIP=OFF
+    sources:
+      - type: git
+        url: https://github.com/jmcnamara/libxlsxwriter.git
+        tag: RELEASE_1.1.8
 
   - name: nanosvg
-    buildsystem: cmake
-    builddir: true
+    buildsystem: cmake-ninja
     sources:
-       - type: git
-         url: https://github.com/wxWidgets/nanosvg.git
-         branch: wx
+      - type: git
+        url: https://github.com/memononen/nanosvg.git
+        commit: 9da543e8329fdd81b64eb18f8ce8bf2f5ac3c7c8
 
-  - name: xlights
+  - name: ffmpeg
+    config-opts:
+      - --prefix=/app
+      - --disable-doc
+      - --disable-static
+      - --enable-shared
+      - --enable-gpl
+      - --enable-version3
+      - --enable-libvorbis
+      - --enable-libopus
+      - --enable-libmp3lame
+      - --enable-libx264
+      - --enable-libx265
+      - --enable-libvpx
+      - --enable-libtheora
+      - --enable-libfreetype
+      - --disable-debug
+    sources:
+      - type: archive
+        url: https://ffmpeg.org/releases/ffmpeg-7.1.tar.xz
+        sha256: 40973d44970dbc83ef302b0609f2e74982be2d85916dd2ee7472d30678a7abe6
+    cleanup:
+      - /share/ffmpeg/examples
+
+  - name: SDL2
+    config-opts:
+      - --prefix=/app
+      - --disable-arts
+      - --disable-esd
+      - --disable-nas
+      - --enable-alsa
+      - --enable-pulseaudio
+      - --enable-video-wayland
+      - --enable-video-x11
+    sources:
+      - type: archive
+        url: https://github.com/libsdl-org/SDL/releases/download/release-2.30.10/SDL2-2.30.10.tar.gz
+        sha256: 784b7c4961945e67c6e1d7e5b4ca0e1b21e16e7b1b2c7e2e7e34e2c5d05aa26
+
+  - name: liquidfun
+    buildsystem: cmake-ninja
+    subdir: liquidfun/Box2D
+    config-opts:
+      - -DBOX2D_BUILD_EXAMPLES=OFF
+      - -DBOX2D_BUILD_UNITTESTS=OFF
+    sources:
+      - type: git
+        url: https://github.com/google/liquidfun.git
+        commit: 2dc5a7b52e31a00a51ce6c1fa71d7b81f5dfafc5
+
+  - name: wxWidgets
     buildsystem: autotools
-    no-autogen: true
+    config-opts:
+      - --prefix=/app
+      - --with-gtk=3
+      - --with-opengl
+      - --enable-unicode
+      - --disable-debug
+      - --enable-shared
+      - --with-libjpeg=sys
+      - --with-libpng=sys
+      - --with-libtiff=sys
+      - --with-zlib=sys
+      - --with-expat=sys
+    sources:
+      - type: git
+        url: https://github.com/xLightsSequencer/wxWidgets.git
+        branch: master
+
+  - name: xLights
+    buildsystem: simple
     build-options:
-      build-args:
-        - --share=network
-      finish-args:
-        - --share=ipc
-        - --socket=fallback-x11
-        - --socket=wayland
-        - --device=dri
-        - --share=network
-        - --filesystem=xdg-documents
+      cflags: -I/app/include
+      cxxflags: -I/app/include -std=gnu++20
+      ldflags: -L/app/lib
+      env:
+        PKG_CONFIG_PATH: /app/lib/pkgconfig
+    build-commands:
+      - make xLights -j$(nproc)
+      - install -Dm755 bin/xLights /app/bin/xLights
+      - install -Dm644 xLights/xLights.desktop /app/share/applications/org.xlights.xLights.desktop
+      - install -Dm644 xLights/icons/xLights.png /app/share/icons/hicolor/256x256/apps/org.xlights.xLights.png
+      - install -Dm644 org.xlights.xLights.metainfo.xml /app/share/metainfo/org.xlights.xLights.metainfo.xml
     sources:
       - type: git
         url: https://github.com/xLightsSequencer/xLights.git
