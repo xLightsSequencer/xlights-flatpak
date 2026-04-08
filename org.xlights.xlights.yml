@@ -53,6 +53,42 @@ modules:
       - type: git
         url: https://github.com/memononen/nanosvg.git
         commit: 5cefd9847949af6df13f65027fd43af5a7513633
+        
+  - name: x264
+    config-opts:
+      - --prefix=/app
+      - --enable-shared
+      - --disable-static
+      - --disable-cli
+      - --enable-pic
+    sources:
+      - type: git
+        url: https://code.videolan.org/videolan/x264.git
+        commit: 31e19f92f00c7d3e5898849985786a499005d8e6  # stable
+
+  - name: x265
+    buildsystem: cmake-ninja
+    subdir: source
+    config-opts:
+      - -DCMAKE_INSTALL_PREFIX=/app
+      - -DENABLE_SHARED=ON
+      - -DENABLE_STATIC=OFF
+      - -DENABLE_CLI=OFF
+    sources:
+      - type: archive
+        url: https://bitbucket.org/multicoreware/x265_git/downloads/x265_3.6.tar.gz
+        sha256: 663531f341c5389f460d730e62e10a4fcca3428ca2ca109693867bc5fe2e2807
+
+  - name: lame
+    config-opts:
+      - --prefix=/app
+      - --enable-shared
+      - --disable-static
+      - --disable-frontend
+    sources:
+      - type: archive
+        url: https://downloads.sourceforge.net/lame/lame-3.100.tar.gz
+        sha256: ddfe36cab873794038ae2c1210557ad34857a4b6bdc515785d1da9e175b1da1e
 
   - name: ffmpeg
     config-opts:
