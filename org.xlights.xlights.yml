@@ -138,7 +138,7 @@ modules:
     sources:
       - type: git
         url: https://github.com/google/liquidfun.git
-        commit: 2dc5a7b52e31a00a51ce6c1fa71d7b81f5dfafc5
+        commit: 7f20402173fd143a3988c921bc384459c6a858f2
 
   - name: wxWidgets
     buildsystem: autotools
