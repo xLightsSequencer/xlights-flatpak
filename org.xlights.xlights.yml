@@ -91,7 +91,7 @@ modules:
     sources:
       - type: archive
         url: https://github.com/libsdl-org/SDL/releases/download/release-2.30.10/SDL2-2.30.10.tar.gz
-        sha256: 784b7c4961945e67c6e1d7e5b4ca0e1b21e16e7b1b2c7e2e7e34e2c5d05aa26
+        sha256: f59adf36a0fcf4c94198e7d3d776c1b3824211ab7aeebeb31fe19836661196aa
 
   - name: liquidfun
     buildsystem: cmake-ninja
