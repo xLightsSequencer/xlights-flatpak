@@ -64,7 +64,7 @@ modules:
     sources:
       - type: git
         url: https://code.videolan.org/videolan/x264.git
-        commit: 31e19f92f00c7d3e5898849985786a499005d8e6  # stable
+        commit: 0480cb05fa188d37ae87e8f4fd8f1aea3711f7ee
 
   - name: x265
     buildsystem: cmake-ninja
