@@ -135,6 +135,7 @@ modules:
     config-opts:
       - -DBOX2D_BUILD_EXAMPLES=OFF
       - -DBOX2D_BUILD_UNITTESTS=OFF
+      - -DCMAKE_COMPILE_WARNING_AS_ERROR=OFF
     sources:
       - type: git
         url: https://github.com/google/liquidfun.git
