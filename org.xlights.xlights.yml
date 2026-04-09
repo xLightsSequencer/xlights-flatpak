@@ -135,7 +135,7 @@ modules:
     config-opts:
       - -DBOX2D_BUILD_EXAMPLES=OFF
       - -DBOX2D_BUILD_UNITTESTS=OFF
-      - -DCMAKE_CXX_FLAGS=-Wno-error
+      - -DCMAKE_CXX_FLAGS=-w
     sources:
       - type: git
         url: https://github.com/google/liquidfun.git
