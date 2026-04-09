@@ -169,6 +169,20 @@ modules:
         url: https://github.com/xLightsSequencer/wxWidgets.git
         branch: master
 
+  # cbp2make converts Code::Blocks .cbp project files to Makefiles.
+  # Required before `make xLights` because xLights/xLights.cbp.mak is generated
+  # (not committed), and the top-level Makefile's `xLights` target invokes it
+  # directly with `make -C xLights -f xLights.cbp.mak linux_release`.
+  - name: cbp2make
+    buildsystem: simple
+    build-commands:
+      - make
+      - install -Dm755 cbp2make /app/bin/cbp2make
+    sources:
+      - type: svn
+        url: svn://svn.code.sf.net/p/cbp2make/code/trunk
+        revision: 147
+
   - name: xLights
     buildsystem: simple
     build-options:
@@ -178,6 +192,13 @@ modules:
       env:
         PKG_CONFIG_PATH: /app/lib/pkgconfig
     build-commands:
+      # Generate xLights/xLights.cbp.mak from the Code::Blocks project file.
+      # This also applies the ignore-warnings sed patch and includes ispc.mak.
+      - make makefile
+      # Place the liquidfun library where xLights.cbp.mak links against it.
+      # (make xLights skips the top-level linkliquid target, so we do it here.)
+      - mkdir -p lib/linux
+      - cp /app/lib/libliquidfun.a lib/linux/libliquidfun.a
       - make xLights -j$(nproc)
       - install -Dm755 bin/xLights /app/bin/xLights
       - install -Dm644 xLights/xLights.desktop /app/share/applications/org.xlights.xLights.desktop
