@@ -130,12 +130,22 @@ modules:
         sha256: f59adf36a0fcf4c94198e7d3d776c1b3824211ab7aeebeb31fe19836661196aa
 
   - name: liquidfun
-    buildsystem: cmake-ninja
-    subdir: liquidfun/Box2D
-    config-opts:
-      - -DBOX2D_BUILD_EXAMPLES=OFF
-      - -DBOX2D_BUILD_UNITTESTS=OFF
-      - -DCMAKE_CXX_FLAGS=-w
+    buildsystem: simple
+    build-commands:
+      # liquidfun has no CMake install() rules, so cmake-ninja would fail at
+      # "ninja install". Build manually and copy just what xLights needs.
+      - cmake -G Ninja liquidfun/Box2D
+          -DBOX2D_BUILD_EXAMPLES=OFF
+          -DBOX2D_BUILD_UNITTESTS=OFF
+          -DCMAKE_CXX_FLAGS=-w
+          -DCMAKE_BUILD_TYPE=Release
+          -Bbuild_lf
+      - ninja -C build_lf -j$(nproc)
+      # The library is built as Box2D/libBox2D.a inside the build dir.
+      # Install it as libliquidfun.a so xLights' Makefile and CMakeLists find it.
+      - install -Dm644 build_lf/Box2D/libBox2D.a /app/lib/libliquidfun.a
+      # Install headers that xLights includes via dependencies/liquidfun/liquidfun/Box2D
+      - cp -r liquidfun/Box2D/Box2D /app/include/liquidfun
     sources:
       - type: git
         url: https://github.com/google/liquidfun.git
