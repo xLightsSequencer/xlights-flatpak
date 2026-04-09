@@ -157,7 +157,6 @@ modules:
       - --prefix=/app
       - --with-gtk=3
       - --with-opengl
-      - --enable-unicode
       - --disable-debug
       - --enable-shared
       - --with-libjpeg=sys
