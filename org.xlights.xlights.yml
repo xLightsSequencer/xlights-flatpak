@@ -143,7 +143,7 @@ modules:
       - ninja -C build_lf -j$(nproc)
       # The library is built as Box2D/libBox2D.a inside the build dir.
       # Install it as libliquidfun.a so xLights' Makefile and CMakeLists find it.
-      - install -Dm644 build_lf/Box2D/libBox2D.a /app/lib/libliquidfun.a
+      - install -Dm644 build_lf/Box2D/libliquidfun.a /app/lib/libliquidfun.a
       # Install headers that xLights includes via dependencies/liquidfun/liquidfun/Box2D
       - cp -r liquidfun/Box2D/Box2D /app/include/liquidfun
     sources:
