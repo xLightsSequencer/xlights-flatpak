@@ -116,10 +116,17 @@ modules:
 
   # -lGLU (and freeglut's own CMake requires glu.h to configure at all): Mesa
   # GLU headers/lib, not provided by the GNOME runtime's GL stack.
+  #
+  # No -Dlibdir=lib config-opt here (unlike the CMAKE_INSTALL_LIBDIR=lib
+  # forced on every cmake-ninja module below): flatpak-builder's meson
+  # buildsystem support already passes --libdir=/app/lib itself by default.
+  # Adding -Dlibdir=lib on top of that produced "Got argument libdir as both
+  # -Dlibdir and --libdir. Pick one." on the flathub-infra CI container's
+  # (newer) flatpak-builder, even though it was harmless on the older
+  # flatpak-builder used to verify this manifest locally -- confirmed by
+  # that exact failure in a real CI run.
   - name: glu
     buildsystem: meson
-    config-opts:
-      - -Dlibdir=lib
     sources:
       - type: archive
         url: https://archive.mesa3d.org/glu/glu-9.0.3.tar.xz
