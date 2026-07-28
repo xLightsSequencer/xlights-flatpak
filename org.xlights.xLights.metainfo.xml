@@ -35,10 +35,10 @@
   <releases>
     <release version="2026.14" date="2026-07-26"/>
   </releases>
-  <!-- TODO: add at least one screenshots/screenshot entry with a real
-       image URL before submitting to Flathub (required there). An
-       empty/missing screenshots block is fine for local, non-Flathub
-       builds; an EMPTY screenshots tag is not: appstreamcli compose
-       reports "filters-but-no-output" for that, which is why this block
-       was removed rather than left empty. -->
+  <screenshots>
+    <screenshot type="default">
+      <caption>Layout tab, editing models and their placement in the preview</caption>
+      <image type="source" width="1541" height="1026">https://raw.githubusercontent.com/xLightsSequencer/xlights-flatpak/main/screenshots/main-window.png</image>
+    </screenshot>
+  </screenshots>
 </component>

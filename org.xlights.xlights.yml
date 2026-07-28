@@ -394,7 +394,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/xLightsSequencer/xLights.git
-        branch: master
+        tag: '2026.14'
+        commit: ed31c39f4f477e466550658e06aebe49b14eb2c7
       - type: archive
         url: https://github.com/ispc/ispc/releases/download/v1.31.0/ispc-v1.31.0-linux.tar.gz
         sha256: d74089c835e10fd7e2c4b9225ced38b87d1fb53d35c7ceabd48cdf035da11b11
